@@ -1,0 +1,37 @@
+{
+  "name": "helgesverre/domain-availability",
+  "homepage": "https://helgesverre.com/products/domain-availability",
+  "time": "2015-10-23",
+  "description": "A PHP library for checking if a domain name is registered or not",
+  "keywords": [
+    "domain"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Helge Sverre",
+      "email": "email@helgesverre.com",
+      "homepage": "https://www.helgesverre.com",
+      "role": "developer"
+    }
+  ],
+  "support": {
+    "email": "email@helgesverre.com",
+    "issues": "https://github.com/HelgeSverre/Domain-Availability/issues"
+  },
+  "require": {
+    "php": ">=5.3",
+    "jeremykendall/php-domain-parser": "^3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.0.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Helge\\Service\\": "src/Service",
+      "Helge\\Loader\\": "src/Loader",
+      "Helge\\Client\\": "src/Client"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "helgesverre/domain-availability": "~0.2.3"
+    }
+}
