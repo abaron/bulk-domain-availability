@@ -250,6 +250,10 @@ $('#availability-form [type=reset]').click(function(e) {
     if (result) {
         $('#result-table tbody').html('');
         $(this).closest('form')[0].reset();
+        $('#available-counter span').html(0);
+        $('#unavailable-counter span').html(0);
+        $('#error-counter span').html(0);
+        $('#error-counter label').addClass('hidden');
     }
 });
 
