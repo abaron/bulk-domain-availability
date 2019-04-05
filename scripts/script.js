@@ -159,7 +159,13 @@ function requestAvailability() {
             if ($('input[name=cache][value=1]:checked').length && typeof(Storage) !== "undefined") {
                 delete res.data.execute_time;
                 delete res.data.execute_time_unit;
-                window.localStorage.setItem(res.data.domain, JSON.stringify(res));
+
+                try {
+                    window.localStorage.setItem(res.data.domain, JSON.stringify(res));
+                }
+                catch (e) {
+                    console.log("Local Storage is full");
+                }
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
