@@ -159,7 +159,13 @@ function requestAvailability() {
             if ($('input[name=cache][value=1]:checked').length && typeof(Storage) !== "undefined") {
                 delete res.data.execute_time;
                 delete res.data.execute_time_unit;
-                window.localStorage.setItem(res.data.domain, JSON.stringify(res));
+
+                try {
+                    window.localStorage.setItem(res.data.domain, JSON.stringify(res));
+                }
+                catch (e) {
+                    console.log("Local Storage is full");
+                }
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -244,6 +250,10 @@ $('#availability-form [type=reset]').click(function(e) {
     if (result) {
         $('#result-table tbody').html('');
         $(this).closest('form')[0].reset();
+        $('#available-counter span').html(0);
+        $('#unavailable-counter span').html(0);
+        $('#error-counter span').html(0);
+        $('#error-counter label').addClass('hidden');
     }
 });
 
