@@ -26,6 +26,7 @@ $('form#availability-form').submit(function(e) {
 
     // generate domains with tld
     $.each(tmpDomains, function(kdomain, domain) {
+
         $.each(tlds, function(ktld, tld) {
             if (isValidDomain(domain)) {
                 window.domains.push(domain);
@@ -33,7 +34,9 @@ $('form#availability-form').submit(function(e) {
                 return true;
             }
 
-            if (isValidDomain(domain + '.' + tld)) {
+            domain = addPrefixSuffix(domain);
+
+            if (isValidDomain(domain + '.' + tld) && isValidLength(domain)) {
                 window.domains.push(domain + '.' + tld);
             }
         });
@@ -45,8 +48,10 @@ $('form#availability-form').submit(function(e) {
             $.each(tmpDomains, function(kdomain2, domain2) {
                 if (!isValidDomain(domain) && !isValidDomain(domain2)) {
                     $.each(tlds, function(ktld, tld) {
-                        if (isValidDomain(domain + domain2 + '.' + tld)) {
-                            window.domains.push(domain + domain2 + '.' + tld);
+                        var domainCombined = addPrefixSuffix(domain + domain2);
+
+                        if (isValidDomain(domainCombined + '.' + tld) && isValidLength(domainCombined)) {
+                            window.domains.push(domainCombined + '.' + tld);
                         }
                     });
                 }
@@ -60,8 +65,10 @@ $('form#availability-form').submit(function(e) {
             $.each(tmpDomains, function(kdomain2, domain2) {
                 if (!isValidDomain(domain) && !isValidDomain(domain2)) {
                     $.each(tlds, function(ktld, tld) {
-                        if (isValidDomain(domain + '-' + domain2 + '.' + tld)) {
-                            window.domains.push(domain + '-' + domain2 + '.' + tld);
+                        var domainCombined = addPrefixSuffix(domain + '-' + domain2);
+
+                        if (isValidDomain(domainCombined + '.' + tld) && isValidLength(domainCombined)) {
+                            window.domains.push(domainCombined + '.' + tld);
                         }
                     });
                 }
@@ -408,13 +415,42 @@ $('table').each(function () {
     $button.text("Export to CSV");
     $button.insertBefore($table);
 
+
     $button.click(function () {
+        var generateFilename = "bulk-domain-availability999.csv";
+
+        if ($("#result-table tbody tr:visible:first td:eq(1)").text() != "") {
+            generateFilename = $("#result-table tbody tr:visible:first td:eq(1)").text() + '-' +
+                $("#result-table tbody tr:visible:last td:eq(1)").text() + '-' +
+                $("#result-table tbody tr:visible").length + '.csv';
+        }
+
         var csv = $table.table2csv({
-            filename: 'bulk-domain-availability.csv',
+            filename: generateFilename,
             excludeColumns: 'td:last-child, th:last-child'
         });
     });
 });
+
+function addPrefixSuffix(domain) {
+    if ($('input[name="prefix"]').val() != "") {
+        domain = $('input[name="prefix"]').val() + domain;
+    }
+
+    if ($('input[name="suffix"]').val() != "") {
+        return domain + $('input[name="suffix"]').val();
+    }
+
+    return domain;
+}
+
+function isValidLength(domain) {
+    if ($('input[name="max-length"]').val() != "") {
+        return domain.length <= parseInt($('input[name="max-length"]').val());
+    }
+
+    return true;
+}
 
 (function(root) {
 
