@@ -93,7 +93,9 @@ button:focus {
 }
 
 textarea,
-select {
+select,
+input[type="text"],
+input[type="number"] {
     width: 100%;
     color: #11AA11;
     height: 200px;
@@ -104,7 +106,9 @@ select {
 }
 
 textarea:focus,
-select:focus {
+select:focus,
+input[type="text"]:focus,
+input[type="number"]:focus {
     outline: none !important;
     border: 1px solid #11EE11;
     box-shadow: 0 0 2px #11EE11;
@@ -113,6 +117,11 @@ select:focus {
 select {
     height: 220px;
     resize: none;
+}
+
+input[type="text"],
+input[type="number"] {
+    height: 10px;
 }
 
 select option:checked {
