@@ -49,6 +49,17 @@ if ($_POST) (new Lookup())->run($_POST);
                 </div>
             </div>
             <div class="row">
+                <div class="col-3">
+                    <input type="text" name="prefix" placeholder="Enter prefix e.g.: the" />
+                </div>
+                <div class="col-3">
+                    <input type="text" name="suffix" placeholder="Enter suffix e.g.: online" />
+                </div>
+                <div class="col-2">
+                    <input type="number" name="max-length" placeholder="Max length" min="1" max="63" />
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-2">
                     <input type="checkbox" name="combine" value="1" id="combine-a">
                     <label for="combine-a">Combine words</label>
