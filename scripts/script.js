@@ -405,9 +405,18 @@ $('table').each(function () {
     $button.text("Export to CSV");
     $button.insertBefore($table);
 
+
     $button.click(function () {
+        var generateFilename = "bulk-domain-availability999.csv";
+
+        if ($("#result-table tbody tr:visible:first td:eq(1)").text() != "") {
+            generateFilename = $("#result-table tbody tr:visible:first td:eq(1)").text() + '-' +
+                $("#result-table tbody tr:visible:last td:eq(1)").text() + '-' +
+                $("#result-table tbody tr:visible").length + '.csv';
+        }
+
         var csv = $table.table2csv({
-            filename: 'bulk-domain-availability.csv',
+            filename: generateFilename,
             excludeColumns: 'td:last-child, th:last-child'
         });
     });
