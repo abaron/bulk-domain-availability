@@ -2,7 +2,9 @@
 
 require_once('classes' . DIRECTORY_SEPARATOR . 'lookup.php');
 
-if ($_POST) (new Lookup())->run($_POST);
+$serverList = dirname(__FILE__) . "/misc/servers/servers.json";
+
+if ($_POST) (new Lookup())->run($_POST, $serverList);
 
 ?>
 
@@ -44,7 +46,7 @@ if ($_POST) (new Lookup())->run($_POST);
                 </div>
                 <div class="col-4">
                     <select name="tlds" multiple required>
-                        <?= Lookup::htmlOptions(); ?>
+                        <?= Lookup::htmlOptions($serverList); ?>
                     </select>
                 </div>
             </div>
