@@ -568,7 +568,7 @@
         "not_found": "No match"
     },
     "id": {
-        "server": "whois.pandi.or.id",
+        "server": "whois.id",
         "not_found": "DOMAIN NOT FOUND"
     },
     "ie": {
@@ -1392,11 +1392,11 @@
         "not_found": "NOT FOUND"
     },
     "co.id": {
-        "server": "whois.pandi.or.id",
+        "server": "whois.id",
         "not_found": "DOMAIN NOT FOUND"
     },
     "my.id": {
-        "server": "whois.pandi.or.id",
+        "server": "whois.id",
         "not_found": "DOMAIN NOT FOUND"
     }
 }
