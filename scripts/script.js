@@ -17,7 +17,9 @@ $('form#availability-form').submit(function(e) {
     var tlds = $('select[name="tlds"]').val();
 
     // trim all values
-    $.map(tmpDomains, $.trim);
+    if (tmpDomains.length <= 100000) {
+        $.map(tmpDomains, $.trim);
+    }
 
     // remove empty values
     var tmpDomains = tmpDomains.filter(function (el) {
@@ -333,6 +335,15 @@ $("#hide-unavailable").click(function(e, parameters) {
     }
 });
 
+$('#remove-unused').click(function(e) {
+    e.preventDefault();
+
+    var result = confirm("Are you sure to remove a words?");
+    if (result) {
+        removeUnused();
+    }
+});
+
 $('#pause').click(function(e) {
     e.preventDefault();
     pause();
@@ -377,6 +388,30 @@ $('#retry-error').click(function(e) {
         requestAvailability();
     }
 });
+
+function removeUnused() {
+    var tmpDomains = $('textarea[name="domains"]').val().replace(/\n/g, " ").split(" ");
+
+    // trim all values
+    if (tmpDomains.length <= 100000) {
+        $.map(tmpDomains, $.trim);
+    }
+
+    // remove empty values
+    var tmpDomains = tmpDomains.filter(function (el) {
+        return el != '';
+    });
+
+    var newDomainName = "";
+
+    $.each(tmpDomains, function(kdomain, domain) {
+        if (isValidLength(domain)) {
+            newDomainName += domain + "\n";
+        }
+    });
+
+    $('textarea[name="domains"]').val(newDomainName.trim());
+}
 
 function pause() {
     isPaused = true;
@@ -445,8 +480,8 @@ function addPrefixSuffix(domain) {
 }
 
 function isValidLength(domain) {
-    if ($('input[name="max-length"]').val() != "") {
-        return domain.length <= parseInt($('input[name="max-length"]').val());
+    if ($('input[name="max-length"]').val() != "" || $('input[name="min-length"]').val() != "") {
+        return domain.length <= parseInt($('input[name="max-length"]').val()) && domain.length >= parseInt($('input[name="min-length"]').val());
     }
 
     return true;

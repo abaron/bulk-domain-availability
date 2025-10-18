@@ -46,7 +46,7 @@ class Lookup
 
     public function getservers()
     {
-        return $this->server;
+        return $this->servers;
     }
 
     public function setWhoisServer($whoisServer)

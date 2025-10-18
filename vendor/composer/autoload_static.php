@@ -6,11 +6,13 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit208051ab01df724a15988de404668a33
 {
-    public static $files = array (
-        '50b81ffc01da30f98e463592787d7917' => __DIR__ . '/..' . '/jeremykendall/php-domain-parser/src/pdp-parse-url.php',
-    );
-
     public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'Psr\\SimpleCache\\' => 16,
+            'Psr\\Log\\' => 8,
+            'Pdp\\' => 4,
+        ),
         'H' => 
         array (
             'Helge\\Service\\' => 14,
@@ -20,6 +22,18 @@ class ComposerStaticInit208051ab01df724a15988de404668a33
     );
 
     public static $prefixDirsPsr4 = array (
+        'Psr\\SimpleCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'Pdp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jeremykendall/php-domain-parser/src',
+        ),
         'Helge\\Service\\' => 
         array (
             0 => __DIR__ . '/..' . '/helgesverre/domain-availability/src/Service',
@@ -34,14 +48,8 @@ class ComposerStaticInit208051ab01df724a15988de404668a33
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'P' => 
-        array (
-            'Pdp\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/jeremykendall/php-domain-parser/src',
-            ),
-        ),
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -49,7 +57,7 @@ class ComposerStaticInit208051ab01df724a15988de404668a33
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit208051ab01df724a15988de404668a33::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit208051ab01df724a15988de404668a33::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit208051ab01df724a15988de404668a33::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit208051ab01df724a15988de404668a33::$classMap;
 
         }, null, ClassLoader::class);
     }

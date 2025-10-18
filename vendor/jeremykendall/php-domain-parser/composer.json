@@ -14,39 +14,96 @@
             "role": "Developer"
         },
         {
+            "name": "Ignace Nyamagana Butera",
+            "homepage": "http://nyamsprod.com",
+            "role": "Developer"
+        },
+        {
             "name": "Contributors",
             "homepage": "https://github.com/jeremykendall/php-domain-parser/graphs/contributors"
         }
     ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/nyamsprod"
+        }
+    ],
     "bin": [
-        "bin/parse",
         "bin/update-psl"
     ],
     "keywords": [
         "Public Suffix List",
+        "Top Level Domains",
         "domain parsing",
-        "url parsing"
+        "icann",
+        "iana",
+        "idn",
+        "tld",
+        "psl"
     ],
     "require": {
-        "php": ">=5.3.0",
-        "ext-curl": "*",
         "ext-intl": "*",
-        "ext-mbstring": "*"
+        "ext-json": "*",
+        "php": "^7.2.5 || ^8.0",
+        "psr/log": "^1.1",
+        "psr/simple-cache": "^1.0.1"
     },
     "require-dev": {
-        "mikey179/vfsStream": "~1.4",
-        "phpunit/phpunit": "~4.4",
-        "jeremykendall/debug-die": "0.0.1.*"
+        "composer/composer": "^1.6 || ^2.0",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "mikey179/vfsstream": "^1.6.7",
+        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan-phpunit": "^0.12",
+        "phpstan/phpstan-strict-rules": "^0.12",
+        "phpunit/phpunit": "^8.0 || ^9.3"
+    },
+    "suggest": {
+        "psr/simple-cache-implementation": "To enable using other cache providers",
+        "ext-curl": "To use the package http client",
+        "league/uri": "To parse URL and validate host"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "Pdp\\": "src/"
-        },
-        "files": [
-            "src/pdp-parse-url.php"
-        ]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pdp\\Tests\\": "tests/"
+        }
     },
     "scripts": {
-        "post-install-cmd": "php bin/update-psl"
+        "phpcs": "php-cs-fixer fix -vvv --diff --dry-run --allow-risky=yes --ansi",
+        "phpstan-src": "phpstan analyse -l max -c phpstan.src.neon src --ansi",
+        "phpstan-tests": "phpstan analyse -l max -c phpstan.tests.neon tests --ansi",
+        "phpstan": [
+            "@phpstan-src",
+            "@phpstan-tests"
+        ],
+        "phpunit": "phpunit --coverage-text",
+        "post-install-cmd": "\\Pdp\\Installer::updateLocalCache",
+        "post-update-cmd": "\\Pdp\\Installer::updateLocalCache",
+        "test": [
+            "@phpcs",
+            "@phpstan",
+            "@phpunit"
+        ]
+    },
+    "scripts-descriptions": {
+        "phpcs": "Runs coding style test suite",
+        "phpstan": "Runs complete codebase static analysis",
+        "phpstan-src": "Runs PHP stan on the source code",
+        "phpstan-test": "Runs PHP stan on the test suite",
+        "phpunit": "Runs unit and functional testing",
+        "test": "Runs the complete test suite"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "5.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
 }

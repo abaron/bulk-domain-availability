@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
 require_once('classes' . DIRECTORY_SEPARATOR . 'lookup.php');
 
 $serverList = dirname(__FILE__) . "/misc/servers/servers.json";
@@ -58,7 +61,13 @@ if ($_POST) (new Lookup())->run($_POST, $serverList);
                     <input type="text" name="suffix" placeholder="Enter suffix e.g.: online" />
                 </div>
                 <div class="col-2">
+                    <input type="number" name="min-length" placeholder="Min length" min="1" max="63" />
+                </div>
+                <div class="col-2">
                     <input type="number" name="max-length" placeholder="Max length" min="1" max="63" />
+                </div>
+                <div class="col-2">
+                    <button type="button" id="remove-unused">Remove Unused</button>
                 </div>
             </div>
             <div class="row">

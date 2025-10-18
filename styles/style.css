@@ -84,6 +84,8 @@ button {
     background-color: #111111;
     border: 1px solid #11AA11;
     cursor: pointer;
+    height: 32px;
+    white-space: nowrap;
 }
 
 button:focus {
@@ -126,6 +128,7 @@ input[type="number"] {
 
 select option:checked {
     background: #11AA11 -webkit-linear-gradient(bottom, #11AA11 0%, #11AA11 100%);
+    color: #ffffff;
 }
 
 .result-title {
