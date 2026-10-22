@@ -6,6 +6,7 @@ ini_set('display_errors', 0);
 require_once('classes' . DIRECTORY_SEPARATOR . 'lookup.php');
 
 $serverList = dirname(__FILE__) . "/misc/servers/servers.json";
+$totalExtensions = file_exists($serverList) ? count(json_decode(file_get_contents($serverList), true) ?: []) : 0;
 
 if ($_POST) (new Lookup())->run($_POST, $serverList);
 
@@ -56,7 +57,7 @@ $icon = function ($name, $class = '') {
     <main class="shell">
         <section class="hero" aria-labelledby="page-title">
             <div class="hero-copy"><p class="eyebrow"><span class="status-dot"></span> BULK DOMAIN AVAILABILITY</p><h1 id="page-title">Find your next <span>domain_</span></h1><p class="hero-description">Check names in bulk. Explore combinations. Find what's available.</p></div>
-            <div class="terminal-note" aria-label="Supported features"><p><span class="terminal-prompt">$</span> bulkdomain --help</p><dl><div><dt>input</dt><dd>names / full domains</dd></div><div><dt>targets</dt><dd><span id="extension-total">374</span> extensions</dd></div><div><dt>output</dt><dd>availability + WHOIS</dd></div></dl></div>
+            <div class="terminal-note" aria-label="Supported features"><p><span class="terminal-prompt">$</span> bulkdomain --help</p><dl><div><dt>input</dt><dd>names / full domains</dd></div><div><dt>targets</dt><dd><span id="extension-total"><?= number_format($totalExtensions) ?></span> extensions</dd></div><div><dt>output</dt><dd>availability + WHOIS</dd></div></dl></div>
         </section>
 
         <noscript><p class="notice notice-error">JavaScript is required to use the domain checker.</p></noscript>
@@ -78,7 +79,7 @@ $icon = function ($name, $class = '') {
                             <select name="tlds" id="tld-select" multiple hidden aria-hidden="true" tabindex="-1"><?= Lookup::htmlOptions($serverList); ?></select>
                             <div id="extension-options" class="extension-options" role="group" aria-labelledby="extensions-label"></div>
                             <p id="extension-empty" class="extension-empty hidden">No matching extensions.</p>
-                            <div class="extension-footer"><button type="button" class="text-button muted-button" id="browse-extensions" aria-expanded="false" aria-controls="extension-options">all extensions <?= $icon('chevron') ?></button><button type="button" class="text-button muted-button" id="clear-extensions">clear selection</button></div>
+                            <div class="extension-footer"><button type="button" class="text-button muted-button" id="browse-extensions" aria-expanded="false" aria-controls="extension-options">all extensions <?= $icon('chevron') ?></button><div class="extension-selection-actions"><button type="button" class="text-button" id="select-all-extensions" aria-controls="extension-options">select all</button><button type="button" class="text-button muted-button" id="clear-extensions" aria-label="Clear all selected extensions">clear</button></div></div>
                         </div>
                     </div>
 

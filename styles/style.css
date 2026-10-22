@@ -7,6 +7,7 @@
     --muted: #8a9787;
     --green: #a4c98b;
     --green-hover: #b6d99e;
+    --unavailable: #cf9792;
     --line: #2b3328;
     --radius: 5px;
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
@@ -107,7 +108,8 @@ textarea:focus { outline: none; border-color: #728d61; }
 .extension-chip.is-selected { background: #1b2419; border-color: #516b40; color: var(--green); }
 .extension-chip.is-selected .icon { opacity: 1; }
 .extension-chip:focus-within { outline: 1px solid var(--green); outline-offset: 1px; }
-.extension-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px; }
+.extension-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 12px; margin-top: 6px; }
+.extension-selection-actions { display: flex; align-items: center; gap: 12px; margin-left: auto; }
 .extension-footer .text-button { font-size: 9px; }
 .extension-footer .icon { width: 12px; height: 12px; }
 .extension-empty { color: var(--muted); padding: 16px 2px; font-size: 11px; }
@@ -210,8 +212,10 @@ td.cell-domain { color: #d0dcc5; font-size: 11px; overflow-wrap: anywhere; min-w
 .cell-actions .action-divider { display: inline-block; margin: 0 7px; color: #45583a; }
 .availability-badge { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; font-size: 9px; color: var(--green); }
 .availability-badge::before { content: ''; display: inline-block; width: 4px; height: 4px; background: currentColor; }
-.badge-unavailable { color: #97a28d; }
+.badge-unavailable { color: var(--unavailable); }
 .badge-error { color: #d2ad71; }
+#result-table tr[data-status="unavailable"] :is(td, a, button, span),
+#result-table tr[data-status="unavailable"] td::before { color: var(--unavailable); }
 .clm-whois, .clm-resource, .clm-exec-time { display: none; font-size: 9px; white-space: nowrap; }
 .show-whois .clm-whois, .show-resource .clm-resource, .show-exec-time .clm-exec-time { display: table-cell; }
 .results-empty { text-align: center; padding: 36px 20px; color: #849779; }

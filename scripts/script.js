@@ -7,7 +7,15 @@
     const input = $('#domain-input');
     const select = $('#tld-select');
     const extensionOptions = Array.from(select.options).filter((option) => !option.disabled);
-    const popular = ['com', 'net', 'org', 'io', 'co', 'dev', 'ai', 'id', 'xyz'];
+    const popular = ['com', 'net', 'org', 'io', 'co', 'app', 'dev', 'ai', 'id', 'xyz'];
+    const extensionMap = new Map(extensionOptions.map((option) => [
+        option.value,
+        {
+            value: option.value,
+            unicode: option.dataset.unicode || option.value,
+            label: option.dataset.label || option.textContent || option.value
+        }
+    ]));
     const extensions = extensionOptions.map((option) => option.value).sort((a, b) => {
         const first = popular.indexOf(a);
         const second = popular.indexOf(b);
@@ -61,26 +69,43 @@
         return extensionOptions.filter((option) => option.selected).map((option) => option.value);
     }
 
+    function extensionQuery() {
+        return $('#extension-search').value.trim().toLowerCase().replace(/^\./, '');
+    }
+
+    function matchesExtensionQuery(extension, query) {
+        const info = extensionMap.get(extension);
+        return !query || extension.includes(query) ||
+            (info && (info.unicode.toLowerCase().includes(query) || info.label.toLowerCase().includes(query)));
+    }
+
     function updateExtensionCount() {
-        $('#extension-count').textContent = selectedExtensions().length + ' selected';
+        const selected = new Set(selectedExtensions());
+        const query = extensionQuery();
+        const matching = extensions.filter((extension) => matchesExtensionQuery(extension, query));
+        $('#extension-count').textContent = selected.size + ' selected';
+        $('#select-all-extensions').textContent = query ? 'select matches' : 'select all';
+        $('#select-all-extensions').disabled = !matching.length || matching.every((extension) => selected.has(extension));
     }
 
     function renderExtensions() {
-        const query = $('#extension-search').value.trim().toLowerCase().replace(/^\./, '');
+        const query = extensionQuery();
         const selected = new Set(selectedExtensions());
-        const visible = extensions.filter((extension) => query ? extension.includes(query) : expanded || popular.includes(extension) || selected.has(extension));
+        const visible = extensions.filter((extension) => matchesExtensionQuery(extension, query) &&
+            (query || expanded || popular.includes(extension) || selected.has(extension)));
         const fragment = document.createDocumentFragment();
         visible.forEach((extension) => {
+            const info = extensionMap.get(extension) || { value: extension, unicode: extension, label: extension };
             const label = document.createElement('label');
             label.className = 'extension-chip' + (selected.has(extension) ? ' is-selected' : '');
-            label.title = '.' + extension;
+            label.title = info.unicode !== info.value ? '.' + info.unicode + ' (.' + info.value + ')' : '.' + info.value;
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = extension;
             checkbox.checked = selected.has(extension);
-            checkbox.setAttribute('aria-label', '.' + extension);
+            checkbox.setAttribute('aria-label', '.' + info.unicode);
             const text = document.createElement('span');
-            text.textContent = '.' + extension;
+            text.textContent = '.' + info.unicode;
             label.append(checkbox, text, icon('check'));
             fragment.appendChild(label);
         });
@@ -93,9 +118,13 @@
     }
 
     function validDomain(value) {
-        if (value.length > 253) return false;
-        const parts = value.split('.');
-        if (parts.length < 2 || !/^[a-z][a-z0-9-]{1,62}$/i.test(parts[parts.length - 1])) return false;
+        let ascii = value;
+        try {
+            ascii = new URL('http://' + value).hostname;
+        } catch (e) {}
+        if (ascii.length > 253) return false;
+        const parts = ascii.split('.');
+        if (parts.length < 2 || !/^[a-z0-9][a-z0-9-]{0,62}$/i.test(parts[parts.length - 1])) return false;
         return parts.every((part) => /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(part));
     }
 
@@ -514,6 +543,16 @@
         $('#form-message').classList.add('hidden');
     });
     $('#browse-extensions').addEventListener('click', () => { expanded = !expanded; renderExtensions(); });
+    $('#select-all-extensions').addEventListener('click', () => {
+        const query = extensionQuery();
+        extensionOptions.forEach((option) => {
+            if (matchesExtensionQuery(option.value, query)) option.selected = true;
+        });
+        if (!query) expanded = true;
+        renderExtensions();
+        $('#form-message').classList.add('hidden');
+    });
+    $('#select-all-extensions')?.addEventListener('click', () => { extensionOptions.forEach((option) => { option.selected = true; }); renderExtensions(); });
     $('#clear-extensions').addEventListener('click', () => { extensionOptions.forEach((option) => { option.selected = false; }); renderExtensions(); });
     $('#try-example').addEventListener('click', () => { input.value = 'brightidea\npixelgarden\nmadebyyou'; updateWordCount(); input.focus(); });
     $('#remove-unused').addEventListener('click', () => {
